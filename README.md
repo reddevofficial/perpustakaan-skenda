@@ -1,58 +1,173 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Perpustakaan SMKN 2 Banjarmasin
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Perpustakaan Sekolah berbasis Laravel 13, Filament 5, dan Livewire 4.
 
-## About Laravel
+## Requirements
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.3+
+- MySQL 8.0+
+- Node.js / Bun.js
+- Composer
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Installation
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone repository
+git clone <repo-url> perpustakaan-skenda
+cd perpustakaan-skenda
 
-php artisan boost:install
+# 2. Install PHP dependencies
+composer install
+
+# 3. Buat file .env
+cp .env.example .env
+
+# 4. Generate application key
+php artisan key:generate
+
+# 5. Konfigurasi .env (koneksi database, dll.)
+
+# 6. Jalankan migrasi
+php artisan migrate --force
+
+# 7. Seed database
+php artisan db:seed
+
+# 8. Install & build frontend assets
+bun install && bun run build
+
+# 9. Buat symbolic link untuk storage
+php artisan storage:link
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Credentials (Development)
 
-## Contributing
+| Role       | Email                  | Password  |
+|------------|------------------------|-----------|
+| Admin      | admin@skenda.com       | password  |
+| Petugas    | petugas@skenda.com     | password  |
+| Siswa      | siswa@skenda.com       | password  |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Login siswa juga bisa menggunakan NIPD: `12088`.
 
-## Code of Conduct
+## Architecture
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Filament 5** admin panel untuk petugas & guru di `/admin`
+- **Livewire 4** portal siswa di `/portal`
+- Dua UI terpisah berbagi database yang sama
 
-## Security Vulnerabilities
+## Database
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Menggunakan database `AbsensiSMKN2DB` yang sudah ada dengan tabel:
 
-## License
+| Tabel | Keterangan |
+|-------|------------|
+| `murid` | Data siswa |
+| `guru` | Data guru |
+| `rombel` | Rombongan belajar |
+| `jurusan` | Jurusan |
+| `tingkat` | Tingkat kelas |
+| `users` | Pengguna sistem |
+| `role` | Role dengan JSON permissions |
+| `books` | Data buku |
+| `book_copies` | Fisik buku (barcode per copy) |
+| `categories` | Kategori buku |
+| ` loans` | Peminjaman |
+| `loan_items` | Item pinjaman |
+| `loan_extensions` | Perpanjangan pinjaman |
+| `reservations` | Reservasi buku |
+| `fines` | Denda |
+| `audit_logs` | Log audit |
+| `settings` | Pengaturan sistem |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Menu Structure
+
+### Admin / Staff (`/admin`)
+
+- **Dashboard** — Ringkasan statistik
+- **Perpustakaan**
+  - Buku
+  - Kategori
+  - Anggota
+- **Transaksi**
+  - Peminjaman
+  - Pengembalian
+  - Reservasi
+  - Perpanjangan
+- **Keuangan**
+  - Denda
+- **Laporan**
+  - Peminjaman
+  - Pengembalian
+  - Keterlambatan
+  - Buku
+  - Anggota
+  - Denda
+- **Sistem**
+  - Pengguna
+  - Pengaturan
+  - Audit Log
+
+### Siswa (`/portal`)
+
+- Katalog Buku (pencarian, filter, paginasi)
+- Pinjaman Saya
+- Reservasi Saya
+- Notifikasi
+- Profil
+
+## Features
+
+- Katalog buku dengan pencarian, filter kategori, filter ketersediaan
+- Alur peminjaman: request → approve → borrow → return
+- Perhitungan denda otomatis saat pengembalian terlambat
+- Antrian reservasi dengan masa berlaku
+- Perpanjangan pinjaman dengan alur persetujuan
+- Sistem notifikasi (database channel)
+- Scheduled tasks: deteksi keterlambatan, kadaluarsa reservasi, pengingat, perhitungan denda
+- Pengaturan sistem (durasi pinjaman, denda, dll. bisa dikonfigurasi)
+- Halaman laporan dengan filter
+- Audit logging
+- Autorisasi berbasis role (Super Admin, Petugas, Siswa)
+- Pindai barcode untuk pencarian buku
+- Nomor transaksi race-condition-safe
+
+## Commands
+
+```bash
+# Tandai peminjaman yang terlambat
+php artisan loans:mark-overdue
+
+# Kadaluarsa reservasi yang melewati batas waktu
+php artisan reservations:expire
+
+# Kirim pengingat pengembalian
+php artisan loans:send-reminders
+
+# Hitung denda untuk peminjaman terlambat
+php artisan fines:calculate-overdue
+
+# Jalankan scheduler (development)
+php artisan schedule:work
+```
+
+## Development
+
+```bash
+# Jalankan Vite dev server
+bun run dev
+
+# Jalankan server lokal
+php artisan serve
+
+# Jalankan test
+php artisan test
+```
+
+## Key Design Decisions
+
+1. **Book + Book Copies** — Setiap buku (`books`) memiliki banyak fisik (`book_copies`), masing-masing dengan barcode unik.
+2. **Settings table** — Konfigurasi disimpan di tabel `settings` dan di-cache via `Cache::remember`.
+3. **Database notifications only** — Saat ini hanya notifikasi database, terstruktur untuk ekstensi ke email/WhatsApp di masa depan.
+4. **Fine amount snapshots** — Jumlah denda disimpan sebagai snapshot saat pencatatan, bukan dihitung ulang dari konfigurasi.
+5. **Transaction numbers** — Nomor transaksi menggunakan DB locking untuk mencegah duplikasi.

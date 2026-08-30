@@ -1,0 +1,57 @@
+@import 'tailwindcss' source(none);
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/components/**/*';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+:root {
+    --font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.fi-sidebar {
+    @apply bg-zinc-900 dark:bg-zinc-950;
+}
+
+.fi-sidebar-header {
+    @apply border-b border-zinc-700/50;
+}
+
+.fi-sidebar-nav-link {
+    @apply rounded-lg mx-2;
+}
+
+.fi-sidebar-nav-link-label {
+    @apply text-zinc-400 text-sm;
+}
+
+.fi-sidebar-nav-link-active .fi-sidebar-nav-link-label {
+    @apply text-white font-medium;
+}
+
+.fi-sidebar-nav-link-active {
+    @apply bg-indigo-600/20;
+}
+
+.fi-simple-layout {
+    @apply bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950;
+}
+
+.fi-content {
+    @apply bg-zinc-50 dark:bg-zinc-950;
+}
+
+.fi-topbar {
+    @apply bg-white/80 backdrop-blur-md dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800;
+}
+
+.fi-card {
+    @apply bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm;
+}
+
+.fi-table {
+    @apply bg-white dark:bg-zinc-900;
+}
+
+.fi-badge {
+    @apply text-xs font-medium;
+}
