@@ -139,7 +139,7 @@ Reservasi dapat dibatalkan selama statusnya masih menunggu atau tersedia.
 1. Buka menu **Manajemen > Buku**.
 2. Klik **Tambah buku**.
 3. Isi judul, penulis, ISBN, penerbit, tahun, kategori, lokasi rak, cover, dan deskripsi.
-4. Simpan buku.
+4. Simpan buku.   
 5. `book_code` dibuat otomatis jika tidak tersedia.
 6. Gunakan filter status dan ketersediaan untuk menemukan buku.
 
